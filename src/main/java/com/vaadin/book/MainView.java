@@ -1,10 +1,12 @@
 package com.vaadin.book;
 
 import com.vaadin.book.domain.Book;
+import com.vaadin.book.service.BookForm;
 import com.vaadin.book.service.BookService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -16,6 +18,7 @@ public class MainView extends VerticalLayout {
     private BookService bookService = BookService.getInstance();
     private Grid<Book> grid = new Grid<>(Book.class);
     private TextField filter = new TextField();
+    private BookForm form = new BookForm(this);
 
     public MainView() {
         //add(new Button("Click me", e -> Notification.show("Hello World")));
@@ -24,7 +27,11 @@ public class MainView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.EAGER);
         filter.addValueChangeListener(e -> update());
         grid.setColumns("title", "author", "publicationYear", "type");
-        add(filter, grid);
+        HorizontalLayout mainContent = new HorizontalLayout(grid, form);
+        mainContent.setSizeFull();
+        grid.setSizeFull();
+
+        add(filter, mainContent);
         setSizeFull();
         refresh();
     }
