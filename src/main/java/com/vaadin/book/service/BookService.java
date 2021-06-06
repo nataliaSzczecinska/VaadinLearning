@@ -1,13 +1,14 @@
 package com.vaadin.book.service;
 
 import com.vaadin.book.domain.Book;
-
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.*;
 
 public class BookService {
 
-    private Set books;
+    private Set<Book> books;
     private static BookService bookService;
 
     private BookService() {
@@ -22,7 +23,7 @@ public class BookService {
     }
 
     public Set getBooks() {
-        return new HashSet<>(books);
+        return books;
     }
 
     public void addBook(Book book) {
@@ -30,7 +31,7 @@ public class BookService {
     }
 
     private Set exampleData() {
-        Set books = new HashSet<>();
+        Set<Book> books = new HashSet<>();
         books.add(new Book("Cracking the Coding Interview: 189 Programming Questions and Solutions", "Gayle Laakmann McDowell",  "2015", "IT"));
         books.add(new Book("Introduction to Algorithms", "The MIT Press", "2009", "IT"));
         books.add(new Book("Introduction to the Theory of Computation", "Michael Sipser", "2012", "IT"));
@@ -39,5 +40,11 @@ public class BookService {
         books.add(new Book("The Handmaid's Tale", "Margaret Atwood", "2019", "Classic"));
         books.add(new Book("Watch Us Rise", "Renée Watson,  Ellen Hagan", "2019", "Poetry"));
         return books;
+    }
+
+    public Set findByTitle(String title) {
+        return books.stream()
+                .filter(e -> e.getTitle().contains(title))
+                .collect(Collectors.toSet());
     }
 }
