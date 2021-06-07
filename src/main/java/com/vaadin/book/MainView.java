@@ -27,6 +27,8 @@ public class MainView extends VerticalLayout {
         filter.setValueChangeMode(ValueChangeMode.EAGER);
         filter.addValueChangeListener(e -> update());
         grid.setColumns("title", "author", "publicationYear", "type");
+        form.setBook(null);
+        grid.asSingleSelect().addValueChangeListener(event -> form.setBook(grid.asSingleSelect().getValue()));
         HorizontalLayout mainContent = new HorizontalLayout(grid, form);
         mainContent.setSizeFull();
         grid.setSizeFull();
