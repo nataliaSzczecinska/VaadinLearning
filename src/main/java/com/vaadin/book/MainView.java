@@ -19,6 +19,7 @@ public class MainView extends VerticalLayout {
     private Grid<Book> grid = new Grid<>(Book.class);
     private TextField filter = new TextField();
     private BookForm form = new BookForm(this);
+    private Button addNewBook = new Button("Add new book");
 
     public MainView() {
         //add(new Button("Click me", e -> Notification.show("Hello World")));
@@ -28,14 +29,22 @@ public class MainView extends VerticalLayout {
         filter.addValueChangeListener(e -> update());
         grid.setColumns("title", "author", "publicationYear", "type");
         form.setBook(null);
-        grid.asSingleSelect().addValueChangeListener(event -> form.setBook(grid.asSingleSelect().getValue()));
+
+        addNewBook.addClickListener(e -> {
+            grid.asSingleSelect().clear();
+            form.setBook(new Book());
+        });
+        HorizontalLayout toolbar = new HorizontalLayout(filter, addNewBook);
+
         HorizontalLayout mainContent = new HorizontalLayout(grid, form);
         mainContent.setSizeFull();
         grid.setSizeFull();
 
-        add(filter, mainContent);
+        add(toolbar, mainContent);
         setSizeFull();
         refresh();
+        grid.asSingleSelect().addValueChangeListener(event -> form.setBook(grid.asSingleSelect().getValue()));
+
     }
 
     public void refresh() {
